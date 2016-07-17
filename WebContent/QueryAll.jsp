@@ -13,7 +13,7 @@
 	</head>
 	
 <body>
-	
+
 	<table>
 	<tr>
 		<th colspan ="5">学生信息</th>
@@ -48,6 +48,7 @@
 			}
 		%>
 	</table>
+	<br><a href="index.jsp">返回主页</a>
 
 </body>
 </html>

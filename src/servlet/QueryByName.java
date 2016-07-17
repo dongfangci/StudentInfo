@@ -15,28 +15,17 @@ import Beans.Student;
 import service.StudentAction;
 
 /**
- * Servlet implementation class Showreport
+ * Servlet implementation class QueryByName
  */
-@WebServlet("/Showreport")
-public class Showreport extends HttpServlet {
-	@Override
-	public void destroy() {
-		// TODO Auto-generated method stub
-		System.out.println("destroy");
-	}
-
-	@Override
-	public void init() throws ServletException {
-		// TODO Auto-generated method stub
-		System.out.println("init...");
-	}
-
+@WebServlet("/QueryByName")
+public class QueryByName extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+       
     /**
-     * Default constructor. 
+     * @see HttpServlet#HttpServlet()
      */
-    public Showreport() {
+    public QueryByName() {
+        super();
         // TODO Auto-generated constructor stub
     }
 
@@ -51,17 +40,15 @@ public class Showreport extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("Showreport");
-		queryAll(request,response);
-//		System.out.println("post");
-//		try {
-//			queryByName(request,response);
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		
-
+		response.setContentType("text/html;charset=utf-8");
+		request.setCharacterEncoding("utf-8");
+		try {
+			System.out.println("ByName");
+			queryByName(request,response);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	private void queryByName(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
 		String name = request.getParameter("name");
@@ -77,19 +64,6 @@ public class Showreport extends HttpServlet {
 		request.getSession().setAttribute("StudentName", list);
 		response.sendRedirect("QueryAll.jsp");
 				
-	}
-
-	private void queryAll(HttpServletRequest request, HttpServletResponse response) throws IOException{
-		List<Student> list = new ArrayList<Student>();
-		StudentAction stua = new StudentAction();
-		try {
-			list = stua.queryAll();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		request.getSession().setAttribute("StudentName", list);
-		response.sendRedirect("QueryAll.jsp");
 	}
 
 }

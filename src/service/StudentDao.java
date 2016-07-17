@@ -14,12 +14,31 @@ import Beans.Student;
 import Jdbc.DBUtil;
 
 public class StudentDao {
-	public void addStudent(Student stu){
-		
+	public void addStudent(Student stu) throws SQLException{
+		Connection conn = DBUtil.getConnection();
+		String sql = "insert student set sid=?,name=?,sex=?,age=?";
+		PreparedStatement pt = conn.prepareStatement(sql);
+		pt.setInt(1, stu.getSid());
+		pt.setString(2, stu.getName());
+		pt.setInt(3, stu.getSex());
+		pt.setInt(4, stu.getAge());
+		pt.executeUpdate();
+		System.out.println("成功插入记录");
 	}
 	
-	public void delStudent(int sid){
+	public boolean delStudent(String name) throws SQLException{
 		
+		String sql = "delete from student where name = ?";
+		Connection conn = DBUtil.getConnection();
+		PreparedStatement pt = conn.prepareStatement(sql);
+		pt.setString(1, name);
+		int count = pt.executeUpdate();
+		System.out.println("成功删除" + count +"条记录");
+		if(count == 0){
+			return false;
+		}
+		else 
+			return true;
 	}
 	
 	public void updateStudent(Student stu){

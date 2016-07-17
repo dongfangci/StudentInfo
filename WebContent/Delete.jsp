@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<form action="QueryByName"  method="post">
+	<form action="Delete"  method="post">
 		
 		<label for="name">姓名：</label>
 		<input type="text" name="name" />

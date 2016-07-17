@@ -15,16 +15,16 @@ import Beans.Student;
 import service.StudentAction;
 
 /**
- * Servlet implementation class MainServlet
+ * Servlet implementation class Delete
  */
-@WebServlet("/MainServlet")
-public class MainServlet extends HttpServlet {
+@WebServlet("/Delete")
+public class Delete extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MainServlet() {
+    public Delete() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,7 +33,6 @@ public class MainServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		doPost(request, response);
 	}
 
@@ -42,40 +41,28 @@ public class MainServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html;charset=utf-8");
-		System.out.println(request.getServerName());
-		String select = request.getParameter("select");
-		System.out.println("Main" + select);
-		
-		if(select.equals("QueryAll")){
-			//response.sendRedirect("Showreport");
-			queryAll(request,response);
-		}
-		else if(select.equals("QueryByName")){
-			response.sendRedirect("QueryByName.jsp");
-		}
-		else if(select.equals("Add")){
-			response.sendRedirect("Add.jsp");
-		}
-		else if(select.equals("Delete")){
-			response.sendRedirect("Delete.jsp");
-		}
-		else{
-			response.sendRedirect("Update.jsp");
-		}
-	}
-	private void queryAll(HttpServletRequest request, HttpServletResponse response) throws IOException{
-		List<Student> list = new ArrayList<Student>();
-		StudentAction stua = new StudentAction();
+		request.setCharacterEncoding("utf-8");
+		System.out.println("Delete");
 		try {
-			list = stua.queryAll();
+			delete(request,response);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		request.getSession().setAttribute("StudentName", list);
-		response.sendRedirect("QueryAll.jsp");
 	}
-	
-	
+
+	private void delete(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+		String name = request.getParameter("name");
+		
+		System.out.println(name);
+		StudentAction stua = new StudentAction();
+		
+		if(stua.del(name)){
+		request.getSession().setAttribute("name", name);
+		response.sendRedirect("successDelete.jsp");
+		}
+		else
+			response.sendRedirect("fail.jsp");
+	}
 
 }

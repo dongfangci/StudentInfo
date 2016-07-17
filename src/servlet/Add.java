@@ -2,8 +2,6 @@ package servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,16 +13,16 @@ import Beans.Student;
 import service.StudentAction;
 
 /**
- * Servlet implementation class MainServlet
+ * Servlet implementation class Add
  */
-@WebServlet("/MainServlet")
-public class MainServlet extends HttpServlet {
+@WebServlet("/Add")
+public class Add extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MainServlet() {
+    public Add() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,8 +31,7 @@ public class MainServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		doPost(request, response);
+		doPost(request,response);
 	}
 
 	/**
@@ -42,40 +39,26 @@ public class MainServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html;charset=utf-8");
-		System.out.println(request.getServerName());
-		String select = request.getParameter("select");
-		System.out.println("Main" + select);
-		
-		if(select.equals("QueryAll")){
-			//response.sendRedirect("Showreport");
-			queryAll(request,response);
-		}
-		else if(select.equals("QueryByName")){
-			response.sendRedirect("QueryByName.jsp");
-		}
-		else if(select.equals("Add")){
-			response.sendRedirect("Add.jsp");
-		}
-		else if(select.equals("Delete")){
-			response.sendRedirect("Delete.jsp");
-		}
-		else{
-			response.sendRedirect("Update.jsp");
-		}
-	}
-	private void queryAll(HttpServletRequest request, HttpServletResponse response) throws IOException{
-		List<Student> list = new ArrayList<Student>();
-		StudentAction stua = new StudentAction();
+		request.setCharacterEncoding("utf-8");
 		try {
-			list = stua.queryAll();
+			add(request, response);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		request.getSession().setAttribute("StudentName", list);
-		response.sendRedirect("QueryAll.jsp");
 	}
 	
-	
-
+	private void add(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException{
+		int sid = Integer.parseInt(request.getParameter("sid"));
+		String name = request.getParameter("name");
+		int sex = Integer.parseInt(request.getParameter("sex"));
+		int age = Integer.parseInt(request.getParameter("age"));
+		Student stu = new Student(sid,name,age,sex);
+		StudentAction stua = new StudentAction();
+		stua.add(stu);
+		request.setAttribute("name", name);
+		response.sendRedirect("successAdd.jsp");
+		
+		
+	}
 }
